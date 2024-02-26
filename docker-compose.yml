@@ -1,0 +1,15 @@
+version: "3.7"
+
+services:
+  app: 
+    restart: always
+    build: .
+    ports:
+      - 8000:8000
+    working_dir: /app
+    volumes:
+      - ./:/app
+    command: bash -c "tail -f README.md"
+    env_file: 
+      - .env
+      
