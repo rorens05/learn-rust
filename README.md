@@ -139,7 +139,8 @@ let guess = guess.trim().parse().expect("Please type a number");
 | 128-bit | i128  | u128     | -170,141,183,460,469,231,731,687,303,715,884,105,728 to 170,141,183,460,469,231,731,687,303,715,884,105,727 or 0 to 340,282,366,920,938,463,463,374,607,431,768,211,455 |
 | arch   | isize  | usize    | depends on the computer architecture |
 
-### You cannot perform operations with integer without converting them to the same type
+### Parsing Integers 
+You cannot perform operations with integer without converting them to the same type
 ``` rust
 let i_8: i8 = 23;
 let i_32: i32 = 1298473;
@@ -148,3 +149,77 @@ let sum = i_8 + i_32; // This will throw an error
 
 let sum = i32::from(i_8) + i_32; // This will work
 ```
+
+### Parsing Floats
+``` rust
+let x = 2.0; // f64
+let y: f32 = 3.0; // f32
+
+let sum = x + y; // This will throw an error
+let sum = f64::from(y) + x; // This will work
+
+```
+
+### Boolean Type
+The boolean type in Rust is specified using the bool keyword. The possible values for a boolean type are true and false.
+``` rust
+let t = true;
+let f: bool = false; // with explicit type annotation
+```
+
+### Character Type
+The char type in Rust is specified using the char keyword. Rust’s char type is four bytes in size and represents a Unicode Scalar Value, which means it can represent a lot more than just ASCII. 
+``` rust
+let c = 'z';
+let z = 'ℤ';
+let heart_eyed_cat = '😻';
+```
+
+### Compound Types
+#### Tuple
+A tuple is a general way of grouping together a number of values with a variety of types into one compound type. Tuples have a fixed length: once declared, they cannot grow or shrink in size.
+``` rust
+let tup: (i32, f64, u8) = (500, 6.4, 1);
+let (x, y, z) = tup;
+
+println!("X: {} | Y: {} | Z: {}", x, y, z);
+
+let tup = (500, 6.4, 1);
+let five_hundred = tup.0;
+let six_point_four = tup.1;
+let one = tup.2;
+
+println!("Five Hundred: {} | Six Point Four: {} | One: {}", five_hundred, six_point_four, one);
+```
+
+#### Array
+An array is a collection of multiple values of the same type. Arrays in Rust have a fixed length, like tuples. If you want an array that can grow or shrink in size, you want a vector.
+``` rust
+let a = [1, 2, 3, 4, 5];
+
+let first = a[0];
+let second = a[1];
+
+println!("First: {} | Second: {}", first, second);
+
+let a: [i32; 5] = [1, 2, 3, 4, 5]; // Explicit type annotation
+let a = [3; 5]; // This will create an array with 5 elements with the value of 3
+```
+
+### Functions
+``` rust
+fn main() {
+    another_function(5, 6);
+}
+
+fn another_function(x: i32, y: i32) {
+    println!("The value of x is: {}", x);
+    println!("The value of y is: {}", y);
+}
+
+fn sum(x: i32, y: i32) -> i32 {
+    x + y
+}
+```
+
+

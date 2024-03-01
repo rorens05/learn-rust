@@ -17,12 +17,22 @@ fn main() {
     let spaces = spaces.len();
 
     println!("spaces {}", spaces);
+    
+    let arr: [i32; 5] = [1, 2, 3, 4, 5];
+    println!("arr[1] = {} | arr[2] = {}", arr[1], arr[2]);
 
-    let i_8: i8 = 23;
-    let i_32: i32 = 1298473;
+    another_function(100);
 
-    let sum = i32::from(i_8) + i_32;
+    let sum_of_two_numbers: i32 = sum(4, 5);
+    println!("Sum = {sum_of_two_numbers}");
 
-    println!("SUM: {sum}");
+}
+ 
+fn another_function(another_variable: i32) {
+    println!("This is another function's another_variable: {}", another_variable);
+}
 
+fn sum(x: i32, y: i32) -> i32 {
+    println!("Solving for sum of {} and {}", x, y);
+    x + y
 }
