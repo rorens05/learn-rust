@@ -9,6 +9,10 @@
 ### Command line inputs
 ``` rust
 use std::io;
+
+
+let mut guess = String::new();
+
 io::stdin()
     .readline(&mut guess)
     .expect("Failed to read line");
@@ -220,6 +224,278 @@ fn another_function(x: i32, y: i32) {
 fn sum(x: i32, y: i32) -> i32 {
     x + y
 }
+
+```
+
+### Conditions
+
+``` rust
+fn main() {
+    let number = 6;
+
+    if number % 4 == 0 {
+        println!("number is divisible by 4");
+    } else if number % 3 == 0 {
+        println!("number is divisible by 3");
+    } else if number % 2 == 0 {
+        println!("number is divisible by 2");
+    } else {
+        println!("number is not divisible by 4, 3, or 2");
+    }
+
+    let condition = true;
+    let number = if condition { 5 } else { 6 };
+    let number = if condition { 5 } else { "six" }; // This will throw an error
+
+}
+
+```
+
+### Loops
+
+``` rust
+fn main() {
+    loop {
+        println!("again!");
+    }
+
+    let mut counter = 0;
+
+    let result = loop {
+        counter += 1;
+
+        if counter == 10 {
+            break counter * 2;
+        }
+    };
+
+    println!("The result is {result}");
+
+}
 ```
 
 
+### labeling loops
+``` rust
+fn main() {
+    let mut count = 0;
+    'counting_up: loop {
+        println!("count = {count}");
+        let mut remaining = 10;
+
+        loop {
+            println!("remaining = {remaining}");
+            if remaining == 9 {
+                break;
+            }
+            if count == 2 {
+                break 'counting_up;
+            }
+            remaining -= 1;
+        }
+
+        count += 1;
+    }
+    println!("End count = {count}");
+}
+```
+
+### While Loop
+``` rust
+fn main() {
+    let mut number = 3;
+
+    while number != 0 {
+        println!("{number}!");
+
+        number -= 1;
+    }
+
+    println!("LIFTOFF!!!");
+}
+```
+
+### Looping Through a Collection with
+``` rust
+fn main() {
+    let a = [10, 20, 30, 40, 50];
+    let mut index = 0;
+
+    while index < 5 {
+        println!("the value is: {}", a[index]);
+
+        index += 1;
+    }
+}
+```
+
+### For Loop through a collection
+``` rust
+fn main() {
+    let a = [10, 20, 30, 40, 50];
+
+    for element in a {
+        println!("the value is: {element}");
+    }
+}
+```
+
+### For Loop with Range
+this will print 3, 2, 1 and 4 is not included
+``` rust
+fn main() {
+    for number in (1..4).rev() {
+        println!("{number}!");
+    }
+    println!("LIFTOFF!!!");
+}
+```
+
+### Strings 
+``` rust
+let mut s = String::from("hello");
+s.push_str(", world!"); // push_str() appends a literal to a String
+println!("{}", s); // This will print `hello, world!`
+```
+
+### Ownership
+- Each value in Rust has an owner.
+- There can only be one owner at a time.
+- When the owner goes out of scope, the value will be dropped.
+
+### Reference
+``` rust
+fn main() {
+    let s1 = String::from("hello");
+
+    let len = calculate_length(&s1);
+
+    println!("The length of '{}' is {}", s1, len);
+}
+
+fn calculate_length(s: &String) -> usize { // s is a reference to a String
+    s.len()
+}
+```
+
+### Modifying a reference
+``` rust
+fn main() {
+    let mut s = String::from("hello");
+
+    change(&mut s);
+
+    println!("{s}");
+}
+
+fn change(some_string: &mut String) {
+    some_string.push_str(", world");
+}
+```
+
+### Multiple References Rules
+- You can have either one mutable reference or any number of immutable references at a time
+``` rust
+let mut s = String::from("hello");
+let r1 = &mut s;
+let r2 = &mut s;
+println!("{}, {}", r1, r2); // This will throw an error
+```
+- You cannot have a mutable reference while having an immutable reference
+
+``` rust
+let mut s = String::from("hello");
+
+let r1 = &s; // no problem
+let r2 = &s; // no problem
+let r3 = &mut s; // BIG PROBLEM
+
+println!("{}, {}, and {}", r1, r2, r3);
+
+```
+- You can have a mutable reference while having an immutable reference if the mutable reference is not used.
+- The compiler can tell that the reference is no longer being used at a point before the end of the scope.
+
+``` rust
+let mut s = String::from("hello");
+
+let r1 = &s; // no problem
+let r2 = &s; // no problem
+println!("{} and {}", r1, r2);
+// variables r1 and r2 will not be used after this point
+
+let r3 = &mut s; // no problem
+println!("{}", r3);
+```
+
+### Dangling References
+- Remember that all variables are deallocated after the scope (function) ends
+``` rust
+fn main() {
+    let reference_to_nothing = dangle();
+}
+
+fn dangle() -> &String {
+    let s = String::from("hello"); // this will be deallocated after the function ends
+
+    &s // return a reference to the String, s, but it will be deallocated after the function ends
+}
+```
+
+- The solution is to return the String itself
+- Remember that the ownership of the variable is moved to the function that calls it
+``` rust
+fn no_dangle() -> String {
+    let s = String::from("hello");
+
+    s // return the String itself. The ownership of the variable is moved to the function that calls it so it will not be deallocated after the function ends
+}
+```
+
+### Slices
+- Slices let you reference a contiguous sequence of elements in a collection rather than the whole collection.
+- Slices can reference to a part of a string or an array
+
+``` rust
+fn main() {
+    let s = String::from("hello world");
+
+    let hello = &s[0..5];
+    let world = &s[6..11];
+
+    let array_of_numbers = [1, 2, 3, 4, 5];
+    let slice = &array_of_numbers[1..3];
+
+}
+```
+- Sample program to get the first word of a string
+``` rust
+fn main() {
+    let mut guess = String::new();
+
+    println!("Please enter a value");
+
+    io::stdin()
+                .read_line(&mut guess)
+                .expect("Failed to read line");
+
+    let word = first_word(&guess[..]);
+
+    println!("the first word is: {}", word);
+
+    guess.clear(); // error!
+
+}
+
+fn first_word(s: &str) -> &str {
+    let bytes = s.as_bytes();
+
+    for (i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return &s[0..i];
+        }
+    }
+
+    &s[..]
+}
+```
