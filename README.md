@@ -484,8 +484,8 @@ fn main() {
     println!("the first word is: {}", word);
 
     guess.clear(); // error!
-
 }
+    
 
 fn first_word(s: &str) -> &str {
     let bytes = s.as_bytes();
